@@ -7,18 +7,37 @@ const Board = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [isDraw, setIsDraw] = useState(false);
+  const [moveHistory, setMoveHistory] = useState({
+    X: [],
+    O: [],
+  });
 
   const handleClick = (index) => {
     if (winner || board[index] !== null) return;
+
+    const player = isNext ? "X" : "O";
+
     const newBoard = [...board];
-    newBoard[index] = isNext ? "X" : "O";
-    const result = checkWinner(newBoard);
+    const newHistory = {
+      ...moveHistory,
+      [player]: [...moveHistory[player]],
+    };
+
+    if (newHistory[player].length === 3) {
+      const oldestIndex = newHistory[player][0];
+      newBoard[oldestIndex] = null; 
+      newHistory[player].shift(); 
+    }
+
+    newBoard[index] = player;
+    newHistory[player].push(index);
+
     setBoard(newBoard);
+    setMoveHistory(newHistory);
+
+    const result = checkWinner(newBoard);
     if (result) {
       setWinner(result);
-    } else if (newBoard.every((cell) => cell !== null)) {
-      setIsDraw(true);
     } else {
       setIsNext((prev) => !prev);
     }
@@ -28,16 +47,19 @@ const Board = () => {
     setBoard(Array(9).fill(null));
     setIsNext(true);
     setWinner(null);
-    setIsDraw(false);
+    setMoveHistory({
+      X: [],
+      O: [],
+    });
   };
 
   return (
     <>
       <div className="mb-6 text-center text-xl font-semibold">
         {winner ? (
-          <span className="text-emerald-400">🏆 Winner: {winner.winner}</span>
-        ) : isDraw ? (
-          <span className="text-amber-400">🤝 It's a Draw!</span>
+          <span className="text-emerald-400">
+            🏆 Player {winner.winner} Won!
+          </span>
         ) : (
           <span className={isNext ? "text-cyan-400" : "text-fuchsia-400"}>
             {isNext ? "X's Turn" : "O's Turn"}
@@ -76,8 +98,25 @@ const Board = () => {
     active:scale-95
   "
       >
-        New Game
+        Start New Game
       </button>
+      <div className="mt-8 rounded-xl border border-gray-600/30 bg-gray-700/40 p-5 text-xs text-gray-400">
+        <h3 className="mb-3 text-lg font-bold text-white">Game Rules:</h3>
+        <ul className="space-y-2 leading-relaxed">
+          <li>
+            • Each player can only have a maximum of 3 pieces on the board at
+            any given time.
+          </li>
+          <li>
+            • After placing 3 pieces, your oldest piece will disappear when you
+            place a new one.
+          </li>
+          <li>
+            • The first player to get 3 of their pieces in a row (horizontally,
+            vertically, or diagonally) wins!
+          </li>
+        </ul>
+      </div>
     </>
   );
 };
