@@ -2,3 +2,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes grow-diag {
+  from {
+    transform: rotate(var(--angle)) scaleX(0);
+  }
+  to {
+    transform: rotate(var(--angle)) scaleX(1);
+  }
+}
+
+.animate-x {
+  transform-origin: left;
+  animation: grow-x 0.4s ease-out forwards;
+}
+
+.animate-y {
+  transform-origin: top;
+  animation: grow-y 0.4s ease-out forwards;
+}

@@ -1,25 +1,28 @@
-const Cell = ({ value, onClick }) => {
-  const isX = value === "X";
-  const isO = value === "O";
-
+const Cell = ({ value, onClick, isWinningCell }) => {
   return (
     <button
+      disabled={Boolean(isWinningCell)}
       onClick={onClick}
       className={`
-        h-20 w-20 sm:h-24 sm:w-24
-        rounded-xl
-        border border-gray-600
-        flex items-center justify-center
-        text-4xl font-extrabold
-        transition-all duration-200
-        hover:scale-105 hover:bg-gray-900
-        active:scale-95
-        ${isX ? "text-cyan-400" : ""}
-        ${isO ? "text-fuchsia-400" : ""}
-        ${!value ? "text-transparent" : ""}
-      `}
+  h-20 w-20 sm:h-24 sm:w-24
+  rounded-xl
+  border
+  flex items-center justify-center
+  text-4xl font-extrabold
+  transition-all duration-200
+  active:scale-95
+
+  ${
+    isWinningCell
+      ? "bg-emerald-500/20 border-emerald-400 scale-110 shadow-lg"
+      : "border-gray-600 hover:bg-gray-900 hover:scale-105"
+  }
+
+  ${value === "X" ? "text-cyan-400" : ""}
+  ${value === "O" ? "text-fuchsia-400" : ""}
+`}
     >
-      {value || ""}
+      {value}
     </button>
   );
 };

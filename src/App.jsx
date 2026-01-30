@@ -16,6 +16,9 @@ function App() {
 
         {/* Board */}
         <Board />
+        <span className="text-xs text-gray-500 mt-4">
+          &copy; 2026 Mohammad Laraib. All rights reserved.
+        </span>
       </div>
     </div>
   );
