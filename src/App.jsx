@@ -1,8 +1,23 @@
+import Board from "./components/Board";
+
 function App() {
   return (
-    <>
-      <h1 className="text-4xl text-red-600 text-center">Tic Tac Infinity</h1>
-    </>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-md rounded-3xl bg-gray-800/80 backdrop-blur border border-gray-700 shadow-2xl p-8 flex flex-col items-center gap-6">
+        {/* Title */}
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
+          Tic Tac <span className="text-indigo-400">∞</span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-sm text-gray-400 text-center">
+          Each player can have only 3 active moves
+        </p>
+
+        {/* Board */}
+        <Board />
+      </div>
+    </div>
   );
 }
 
