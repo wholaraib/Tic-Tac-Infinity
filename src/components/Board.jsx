@@ -25,8 +25,8 @@ const Board = () => {
 
     if (newHistory[player].length === 3) {
       const oldestIndex = newHistory[player][0];
-      newBoard[oldestIndex] = null; 
-      newHistory[player].shift(); 
+      newBoard[oldestIndex] = null;
+      newHistory[player].shift();
     }
 
     newBoard[index] = player;
@@ -67,7 +67,11 @@ const Board = () => {
         )}
       </div>
 
-      <div className="relative p-4 bg-gray-800 rounded-2xl shadow-2xl">
+      <div
+        className={`relative p-4 bg-gray-800 rounded-2xl shadow-2xl
+    ${winner ? "pointer-events-none opacity-90" : ""}
+  `}
+      >
         {winner && <StrikeLine strike={winner.strike} />}
         <div className="grid grid-cols-3 gap-3">
           {board.map((value, index) => (
@@ -86,7 +90,7 @@ const Board = () => {
         className="
     mt-8 w-full
     rounded-2xl
-    bg-gradient-to-r from-indigo-600 to-purple-600
+    bg-gradient-to-r from-cyan-600 to-fuchsia-500
     py-3
     font-bold
     text-white
