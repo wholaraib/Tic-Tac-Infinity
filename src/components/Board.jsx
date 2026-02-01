@@ -7,6 +7,7 @@ const Board = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
+  const [mode, setMode] = useState("pvp");
   const [moveHistory, setMoveHistory] = useState({
     X: [],
     O: [],
@@ -43,7 +44,7 @@ const Board = () => {
     }
   };
 
-  const resetGame = () => {
+  const resetGame = (newMode) => {
     setBoard(Array(9).fill(null));
     setIsNext(true);
     setWinner(null);
@@ -51,10 +52,35 @@ const Board = () => {
       X: [],
       O: [],
     });
+    setMode(newMode);
   };
 
   return (
     <>
+      <div className="mb-4 flex justify-center gap-3">
+        <button
+          onClick={() => resetGame("pvp")}
+          className={`px-4 py-2 rounded-lg font-semibold transition ${
+            mode === "pvp"
+              ? "bg-indigo-600 text-white"
+              : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+          }`}
+        >
+          2 Players
+        </button>
+
+        <button
+          onClick={() => resetGame("ai")}
+          className={`px-4 py-2 rounded-lg font-semibold transition ${
+            mode === "ai"
+              ? "bg-indigo-600 text-white"
+              : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+          }`}
+        >
+          Vs AI
+        </button>
+      </div>
+
       <div className="mb-6 text-center text-xl font-semibold">
         {winner ? (
           <span className="text-emerald-400">
