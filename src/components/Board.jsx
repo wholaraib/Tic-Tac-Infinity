@@ -1,7 +1,8 @@
 import Cell from "./Cell";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { checkWinner } from "../utils/checkWinner";
 import StrikeLine from "./StrikeLine";
+import { getAIMove } from "../utils/aiMove";
 
 const Board = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -13,8 +14,9 @@ const Board = () => {
     O: [],
   });
 
-  const handleClick = (index) => {
+  const handleClick = (index, isAI = false) => {
     if (winner || board[index] !== null) return;
+    if (mode === "ai" && !isNext && !isAI) return;
 
     const player = isNext ? "X" : "O";
 
@@ -54,6 +56,19 @@ const Board = () => {
     });
     setMode(newMode);
   };
+
+  useEffect(() => {
+    if (mode !== "ai" || isNext || winner) return;
+    const player = isNext ? "X" : "O";
+    const aiMove = getAIMove(board, player);
+    if (aiMove === null) return;
+    console.log("AI Move:", aiMove);
+    const timer = setTimeout(() => {
+      handleClick(aiMove, true);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [board, isNext, winner, mode]);
 
   return (
     <>
@@ -95,7 +110,7 @@ const Board = () => {
 
       <div
         className={`relative p-4 bg-gray-800 rounded-2xl shadow-2xl
-    ${winner ? "pointer-events-none opacity-90" : ""}
+    ${mode === "ai" && !isNext || winner ? "pointer-events-none opacity-90" : ""}
   `}
       >
         {winner && <StrikeLine strike={winner.strike} />}
