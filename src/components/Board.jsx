@@ -8,7 +8,7 @@ const Board = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [mode, setMode] = useState("pvp");
+  const [mode, setMode] = useState("ai");
   const [moveHistory, setMoveHistory] = useState({
     X: [],
     O: [],
@@ -62,14 +62,12 @@ const Board = () => {
     const player = isNext ? "X" : "O";
     const aiMove = getAIMove(board, player);
     if (aiMove === null) return;
-    console.log("AI Move:", aiMove);
     const timer = setTimeout(() => {
       handleClick(aiMove, true);
     }, 500);
 
     return () => clearTimeout(timer);
   }, [board, isNext, winner, mode]);
-
   return (
     <>
       <div className="mb-4 flex justify-center gap-3">
@@ -127,7 +125,7 @@ const Board = () => {
       </div>
 
       <button
-        onClick={resetGame}
+        onClick={() => resetGame(mode)}
         className="
     mt-8 w-full
     rounded-2xl
